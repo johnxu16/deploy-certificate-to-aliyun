@@ -4,6 +4,7 @@ import Env from '@alicloud/darabonba-env';
 import * as $OpenApi from '@alicloud/openapi-client';
 import Util from '@alicloud/tea-util';
 import * as $tea from '@alicloud/tea-typescript';
+import path from 'path';
 import * as fs from 'fs';
 
 
@@ -76,8 +77,8 @@ export default class Client {
       const domain = domains[i]
       const cdn_domain = cdn_domains[i]
 
-      const cert_path = `~/certs/${domain}/fullchain.pem`
-      const key_path = `~/certs/${domain}/privkey.pem`
+      const cert_path = path.resolve(`~/certs/${domain}/fullchain.pem`)
+      const key_path = path.resolve(`~/certs/${domain}/privkey.pem`)
 
       Console.log(`${cdn_domain} ${cert_path} ${key_path}`);
 
