@@ -6,6 +6,7 @@ import Util from '@alicloud/tea-util';
 import * as $tea from '@alicloud/tea-typescript';
 import path from 'path';
 import * as fs from 'fs';
+import os from 'os';
 
 
 export default class Client {
@@ -77,7 +78,7 @@ export default class Client {
       const domain = domains[i]
       const cdn_domain = cdn_domains[i]
 
-      const homepath = process.env.HOME
+      const homepath = os.homedir()
       const cert_path = path.resolve(homepath, `/certs/${domain}/fullchain.pem`)
       const key_path = path.resolve(homepath, `/certs/${domain}/privkey.pem`)
 
