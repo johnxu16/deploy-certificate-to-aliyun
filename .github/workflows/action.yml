@@ -14,12 +14,18 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Set up NodeJS
-      uses: actions/setup-node@v4
+      uses: pnpm/action-setup@v3
       with:
-        node-version: 18
+        version: 9
+    
+    - name: Install dependencies
+      run: pnpm install
+
+    - name: Compile typescript
+      run: pnpm run build
 
     - name: Install acme.sh
       env:
@@ -50,13 +56,6 @@ jobs:
           ~/.acme.sh/acme.sh --issue --dns dns_tencent -d "*.${domain}" \
           --key-file ~/certs/${domain}/privkey.pem --fullchain-file ~/certs/${domain}/fullchain.pem
         done
-
-
-    - name: Install NodeJS dependencies
-      run: pnpm install
-
-    - name: Compile TypeScript
-      run: pnpm run build
 
     - name: Upload certificates to Alibaba Cloud Certificate Manager
       env:
