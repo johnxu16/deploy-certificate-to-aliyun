@@ -77,8 +77,9 @@ export default class Client {
       const domain = domains[i]
       const cdn_domain = cdn_domains[i]
 
-      const cert_path = path.resolve(`~/certs/${domain}/fullchain.pem`)
-      const key_path = path.resolve(`~/certs/${domain}/privkey.pem`)
+      const homepath = process.env.HOME
+      const cert_path = path.resolve(homepath, `/certs/${domain}/fullchain.pem`)
+      const key_path = path.resolve(homepath, `/certs/${domain}/privkey.pem`)
 
       Console.log(`${cdn_domain} ${cert_path} ${key_path}`);
 
