@@ -1,7 +1,6 @@
 # deploy-certificate-to-aliyun
-每两个月自动部署泛解析证书到阿里云CDN上
 
-
+每两个月自动上传泛解析证书到阿里云证书管理上
 
 ## 如何使用
 
@@ -15,12 +14,9 @@ fork该项目，并填写对应参数，再push一次代码即可（随便改点
 - `ALIYUN_CDN_DOMAINS`：设置阿里云cdn域名，一般是三级域名，例如cdn.example.com，需要跟上面的DOMAINS对应，否则会设置错误
 - `EMAIL`:  证书过期时提醒的邮件
 
-
-
-
-
 ## 相关文档
 
 > 这里使用的是阿里云提供的api进行的调用
 >
-> - 设置CDN证书：https://next.api.aliyun.com/document/Cdn/2018-05-10/SetCdnDomainSSLCertificate
+> - 上传证书: <https://next.api.aliyun.com/api/cas/2020-04-07/UploadUserCertificate>
+> - 设置CDN证书：<https://next.api.aliyun.com/document/Cdn/2018-05-10/SetCdnDomainSSLCertificate>

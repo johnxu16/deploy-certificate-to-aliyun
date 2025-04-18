@@ -1,0 +1,36 @@
+{
+  "name": "upload-ssl-certificate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/client.js",
+  "scripts": {
+    "test": "mocha --reporter spec --timeout 3000 test/*.test.js",
+    "test-cov": "nyc -e .ts -r=html -r=text -r=lcov npm run test",
+    "build": "tsc",
+    "prepublishOnly": "tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^12.20.55",
+    "nyc": "^15.0.0",
+    "source-map-support": "^0.5.16",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "@alicloud/cas20200407": "1.0.8",
+    "@alicloud/darabonba-env": "^1.0.0",
+    "@alicloud/darabonba-string": "^1.0.2",
+    "@alicloud/openapi-client": "^0.4.4",
+    "@alicloud/tea-console": "^1.0.0",
+    "@alicloud/tea-typescript": "^1.7.1",
+    "@alicloud/tea-util": "^1.4.5",
+    "@darabonba/number": "^1.1.0"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "packageManager": "pnpm@9.9.0+sha512.60c18acd138bff695d339be6ad13f7e936eea6745660d4cc4a776d5247c540d0edee1a563695c183a66eb917ef88f2b4feb1fc25f32a7adcadc7aaf3438e99c1"
+}
