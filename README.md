@@ -19,4 +19,5 @@ fork该项目，并填写对应参数，再push一次代码即可（随便改点
 > 这里使用的是阿里云提供的api进行的调用
 >
 > - 上传证书: <https://next.api.aliyun.com/api/cas/2020-04-07/UploadUserCertificate>
+> - 设置oss自定义域名证书: <https://api.aliyun.com/api/Oss/2019-05-17/PutCname?sdkStyle=dara>
 > - 设置CDN证书：<https://next.api.aliyun.com/document/Cdn/2018-05-10/SetCdnDomainSSLCertificate>

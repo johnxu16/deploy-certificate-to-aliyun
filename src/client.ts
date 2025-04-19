@@ -54,10 +54,6 @@ export default class Client {
     return response;
   }
 
-  static async getFileByPath() {
-
-  }
-
   static async main(args: string[]): Promise<void> {
     // 初始化客户端
     let client = await Client.createClient();
@@ -95,6 +91,8 @@ export default class Client {
     // 统一上传证书
     const responses = await Promise.all(uploadTasks)
     Console.log(responses.toString())
+
+    // oss使用证书
 
     // let certId = Number.parseLong(args[7]);
     // 获取证书
