@@ -14,6 +14,27 @@ fork该项目，并填写对应参数，再push一次代码即可（随便改点
 - `ALIYUN_CDN_DOMAINS`：设置阿里云cdn域名，一般是三级域名，例如cdn.example.com，需要跟上面的DOMAINS对应，否则会设置错误
 - `EMAIL`:  证书过期时提醒的邮件
 
+目前在使用的域名在DNSPOD下，acme需使用dns_tencent模式和腾讯云认证信息, 有需求可以在action.yml中替换
+
+- `TENCENT_SECRET_ID`：腾讯云账户AK
+- `TENCENT_SECRET_KEY`：腾讯云账户SK
+
+```yml
+    - name: Obtain SSL Certificates
+      env:
+        DOMAINS: ${{ secrets.DOMAINS }}
+        Tencent_SecretId: ${{ secrets.TENCENT_SECRET_ID }}
+        Tencent_SecretKey: ${{ secrets.TENCENT_SECRET_KEY }}
+        Ali_Key: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+        Ali_Secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+      run: |
+        IFS=',' read -r -a domain_array <<< "${DOMAINS}"
+        for domain in "${domain_array[@]}"; do
+          ~/.acme.sh/acme.sh --issue --dns dns_tencent -d "*.${domain}" \
+          --key-file ~/certs/${domain}/privkey.pem --fullchain-file ~/certs/${domain}/fullchain.pem
+        done
+```
+
 ## 相关文档
 
 > 这里使用的是阿里云提供的api进行的调用
