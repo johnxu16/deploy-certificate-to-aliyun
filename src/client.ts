@@ -3,6 +3,7 @@ import Cas, * as $Cas from '@alicloud/cas20200407';
 import Env from '@alicloud/darabonba-env';
 import * as $OpenApi from '@alicloud/openapi-client';
 import Util from '@alicloud/tea-util';
+import Number from '@darabonba/number';
 import * as $tea from '@alicloud/tea-typescript';
 import path from 'path';
 import * as fs from 'fs';
@@ -54,51 +55,70 @@ export default class Client {
     return response;
   }
 
+  static async listUserCertificateOrder(client: Cas, keyword: string, orderType: string): Promise<$Cas.ListUserCertificateOrderResponse> {
+    let request = new $Cas.ListUserCertificateOrderRequest({});
+    request.keyword = keyword;
+    request.orderType = orderType;
+    request.showSize = 1;
+    let response = await client.listUserCertificateOrder(request);
+    Console.log(Util.toJSONString($tea.toMap(response.body)));
+    return response;
+  }
+
+  static async GetUserCertificateDetail(client: Cas, certId: number): Promise<$Cas.GetUserCertificateDetailResponse> {
+    let request = new $Cas.GetUserCertificateDetailRequest({});
+    request.certId = certId;
+    let response = await client.getUserCertificateDetail(request);
+    Console.log(Util.toJSONString($tea.toMap(response.body)));
+    return response;
+  }
+
+  // static async uploadCname(client: Cas, domain: string, cName: string): Promise<$Cas.put> {
+  //   let request = new $Cas.UploadCnameRequest({});
+  //   request.domain = domain;
+  // }
+
   static async main(args: string[]): Promise<void> {
     // 初始化客户端
     let client = await Client.createClient();
 
-    // let name = args[0];
-    // let cert = args[1];
-    // let key = args[2];
-    // 不使用国密证书
-    // let encryptCert = args[3];
-    // let encryptPrivateKey = args[4];
-    // let signCert = args[5];
-    // let signPrivateKey = args[6];
     const domains = Env.getEnv('DOMAINS').split(',')
     const cdn_domains = Env.getEnv('ALIYUN_CDN_DOMAINS').split(',')
 
-    const uploadTasks = [];
+    // 上传证书
+    // const uploadTasks = [];
     for (let i = 0; i < domains.length; i++) {
       const domain = domains[i]
       const cdn_domain = cdn_domains[i]
+
+      let cert = ""
+      let key = ""
+
+      // 读取证书并删除同名证书
+      const certListRes = await Client.listUserCertificateOrder(client, domain, "UPLOAD")
+      if (certListRes.body.certificateOrderList.length === 1 && certListRes.body.certificateOrderList[0].name === cdn_domain) {
+        const certId = certListRes.body.certificateOrderList[0].certificateId
+        await Client.deleteUserCertificate(client, certId)
+      }
 
       const homepath = os.homedir()
       const cert_path = path.resolve(homepath, `./certs/${domain}/fullchain.pem`)
       const key_path = path.resolve(homepath, `./certs/${domain}/privkey.pem`)
 
-      Console.log(`${cdn_domain} ${cert_path} ${key_path}`);
+      Console.log(`${cdn_domain} ${cert_path} ${key_path}`)
 
       // 读取证书和私钥
-      const cert = fs.readFileSync(cert_path, "utf-8");
-      const key = fs.readFileSync(key_path, "utf-8");
+      cert = fs.readFileSync(cert_path, "utf-8")
+      key = fs.readFileSync(key_path, "utf-8")
 
       // 上传证书
-      uploadTasks.push(Client.uploadUserCertificate(client, cdn_domain, cert, key, "", "", "", ""));
+      await Client.uploadUserCertificate(client, cdn_domain, cert, key, "", "", "", "")
+
+      // 证书详情 获取CertIdentifier
+      // const certDetailRes = await Client.GetUserCertificateDetail(client, certId)
+      // 上传CNAME 接口只支持java的sdk
+      // putCname <https://api.aliyun.com/api/Oss/2019-05-17/PutCname?sdkStyle=dara>
     }
-
-    // 统一上传证书
-    const responses = await Promise.all(uploadTasks)
-    Console.log(responses.toString())
-
-    // oss使用证书
-
-    // let certId = Number.parseLong(args[7]);
-    // 获取证书
-    // let response1 = await Client.getUserCertificateDetail(client, certId);
-    // 删除证书
-    // let response2 = await Client.deleteUserCertificate(client, certId);
   }
 
 }
