@@ -65,11 +65,12 @@ jobs:
       run: node dist/upload-ssl.js
 
     - name: Prepare ossutil
-      uses: manyuanrong/setup-ossutil@v3.0
+      uses: yizhoumo/setup-ossutil@v2
       env:
         ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
         ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
       with:
+        ossutil-version: '1.7.19'
         endpoint: "https://oss-cn-hangzhou.aliyuncs.com"
         access-key-id: "${ALIYUN_ACCESS_KEY_ID}"
         access-key-secret: "${ALIYUN_ACCESS_KEY_SECRET}"
@@ -79,7 +80,7 @@ jobs:
         BUCKET: ${{ secrets.BUCKET }}
         DOMAIN: ${{ secrets.DOMAIN }}
       run: |
-        ossutil bucket-cname --method put "oss://${bucket}" "~/certs/${domain}/oss_cname.xml"
+        ossutil bucket-cname --method put --item certificate "oss://${BUCKET}" "~/certs/${DOMAIN}/oss_cname.xml"
     
     # - name: Set CNAME for OSS bucket
     #   env:
