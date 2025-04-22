@@ -74,14 +74,21 @@ jobs:
         access-key-id: "${ALIYUN_ACCESS_KEY_ID}"
         access-key-secret: "${ALIYUN_ACCESS_KEY_SECRET}"
     
-    - name: Set CNAME for OSS bucket
+    - name: ossutil update certificate
       env:
         BUCKET: ${{ secrets.BUCKET }}
         DOMAIN: ${{ secrets.DOMAIN }}
-        ALIYUN_CDN_DOMAIN: ${{ secrets.ALIYUN_CDN_DOMAIN }}
-        TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
-        TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
-      run: node set-cname.js
+      run: |
+        ossutil bucket-cname --method put --item certificate "oss://${bucket}" "~/certs/${domain}/oss_cname.xml"
+    
+    # - name: Set CNAME for OSS bucket
+    #   env:
+    #     BUCKET: ${{ secrets.BUCKET }}
+    #     DOMAIN: ${{ secrets.DOMAIN }}
+    #     ALIYUN_CDN_DOMAIN: ${{ secrets.ALIYUN_CDN_DOMAIN }}
+    #     TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
+    #     TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
+    #   run: node set-cname.js
 
     - name: Clean up
       env:

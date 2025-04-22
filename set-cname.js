@@ -24,7 +24,7 @@ import { parseStringPromise } from 'xml2js'
   // const cnameToken = cnameTokenRes.CnameToken.Token[0]
   // const oss_url = `${bucket}.oss-cn-hangzhou.aliyuncs.com.`
 
-  // // tencent 
+  // // tencent
   // // https://cloud.tencent.com/document/api/1427/112178
   // const addTokenRes = await $`tccli dnspod CreateTXTRecord --cli-unfold-argument --Domain ${sld_domain} --RecordLine 默认 --Value ${cnameToken} --SubDomain _dnsauth.${sub_domain}`
   // if (addTokenRes.exitCode !== 0) {
@@ -41,7 +41,9 @@ import { parseStringPromise } from 'xml2js'
 
   // await $`sleep 120; echo waiting for 2 minutes`
 
-  const putCnameRes = await $`ossutil bucket-cname --method put --item certificate oss://${bucket} ~/certs/${domain}/oss_cname.xml`
+  const putCnameCmd = `ossutil bucket-cname --method put --item certificate oss://${bucket} ~/certs/${domain}/oss_cname.xml`
+  console.log(putCnameCmd)
+  const putCnameRes = await $`${putCnameCmd}`
 
   if (putCnameRes.exitCode !== 0) {
     console.error(putCnameRes.stderr)
