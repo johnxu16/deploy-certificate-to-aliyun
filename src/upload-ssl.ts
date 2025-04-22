@@ -107,7 +107,7 @@ export default class Client {
 <?xml version="1.0" encoding="utf-8"?>
 <BucketCnameConfiguration>
   <Cname>
-    <Domain>${domain}</Domain>
+    <Domain>${cdn_domain}</Domain>
     <CertificateConfiguration>
       <CertId>${certId}-${bucket}</CertId>
       <Certificate>${cert}</Certificate>
