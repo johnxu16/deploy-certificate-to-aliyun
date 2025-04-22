@@ -79,7 +79,7 @@ jobs:
         BUCKET: ${{ secrets.BUCKET }}
         DOMAIN: ${{ secrets.DOMAIN }}
       run: |
-        ossutil bucket-cname --method put --item certificate "oss://${bucket}" "~/certs/${domain}/oss_cname.xml"
+        ossutil bucket-cname --method put "oss://${bucket}" "~/certs/${domain}/oss_cname.xml"
     
     # - name: Set CNAME for OSS bucket
     #   env:
