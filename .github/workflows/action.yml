@@ -49,7 +49,7 @@ jobs:
         Tencent_SecretKey: ${{ secrets.TENCENT_SECRET_KEY }}
       run: |
         ~/.acme.sh/acme.sh --issue --dns dns_tencent -d "*.${DOMAIN}" \
-        --key-file ~/certs/${domain}/privkey.pem --fullchain-file ~/certs/${domain}/fullchain.pem
+        --key-file ~/certs/${DOMAIN}/privkey.pem --fullchain-file ~/certs/${DOMAIN}/fullchain.pem
 
     - name: Upload certificates to Alibaba Cloud Certificate Manager
       env:

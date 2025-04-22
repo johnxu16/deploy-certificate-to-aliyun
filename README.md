@@ -41,3 +41,4 @@ fork该项目，并填写对应参数，再push一次代码即可（随便改点
 > 上传CNAME 接口只支持java的sdk 但我们可以用ossutil putCname
 > JDK <https://api.aliyun.com/api/Oss/2019-05-17/PutCname?sdkStyle=dara>
 > OSSUTIL <https://www.alibabacloud.com/help/zh/oss/developer-reference/put-cname>
+> 阿里云文档啥也没写清，源码里有详细的使用方法 <https://github.com/aliyun/ossutil/blob/master/lib/bucket_cname.go>
