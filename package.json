@@ -26,7 +26,10 @@
     "@alicloud/tea-console": "^1.0.0",
     "@alicloud/tea-typescript": "^1.7.1",
     "@alicloud/tea-util": "^1.4.5",
-    "@darabonba/number": "^1.1.0"
+    "@darabonba/number": "^1.1.0",
+    "@types/xml2js": "^0.4.14",
+    "xml2js": "^0.6.2",
+    "zx": "^8.5.3"
   },
   "files": [
     "dist",

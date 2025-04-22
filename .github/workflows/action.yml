@@ -16,6 +16,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Install Tencent Cloud CLI
+      run: pip install tccli
+
     - name: Set up NodeJS
       uses: pnpm/action-setup@v3
       with:
@@ -59,7 +62,7 @@ jobs:
         DOMAIN: ${{ secrets.DOMAIN }}
         # 设置阿里云cdn域名，一般是三级域名，例如cdn.example.com，需要跟上面的DOMAIN对应，否则会设置错误
         ALIYUN_CDN_DOMAIN: ${{ secrets.ALIYUN_CDN_DOMAIN }}
-      run: node dist/client.js
+      run: node dist/upload-ssl.js
 
     - name: Prepare ossutil
       uses: manyuanrong/setup-ossutil@v2.0
@@ -75,7 +78,10 @@ jobs:
       env:
         BUCKET: ${{ secrets.BUCKET }}
         DOMAIN: ${{ secrets.DOMAIN }}
-      run: ossutil bucket-cname --method put --item certificate oss://${BUCKET} ~/certs/${DOMAIN}/oss_cname.xml
+        ALIYUN_CDN_DOMAIN: ${{ secrets.ALIYUN_CDN_DOMAIN }}
+        TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
+        TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
+      run: node dist/set-cname.js
 
     - name: Clean up
       env:
