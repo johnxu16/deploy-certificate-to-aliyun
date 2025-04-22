@@ -65,7 +65,7 @@ jobs:
       run: node dist/upload-ssl.js
 
     - name: Prepare ossutil
-      uses: manyuanrong/setup-ossutil@v2.0
+      uses: manyuanrong/setup-ossutil@v3.0
       env:
         ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
         ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
