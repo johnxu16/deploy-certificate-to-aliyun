@@ -13,6 +13,7 @@ fork该项目，并填写对应参数，再push一次代码即可（随便改点
 - `DOMAIN`: 要设置域名的二级域名，例如要设置*.example.com，这里填写的就是example.com
 - `ALIYUN_CDN_DOMAIN`：设置阿里云cdn域名，一般是三级域名，例如cdn.example.com，需要跟上面的DOMAIN对应，否则会设置错误
 - `BUCKET`:  OSS存储桶
+- `REGION`:  OSS区域(拼接certId)
 - `EMAIL`:  证书过期时提醒的邮件
 
 目前在使用的域名在DNSPOD下，acme需使用dns_tencent模式和腾讯云认证信息, 有需求可以在action.yml中替换
