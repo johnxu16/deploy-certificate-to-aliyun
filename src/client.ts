@@ -3,7 +3,6 @@ import Cas, * as $Cas from '@alicloud/cas20200407';
 import Env from '@alicloud/darabonba-env';
 import * as $OpenApi from '@alicloud/openapi-client';
 import Util from '@alicloud/tea-util';
-import Number from '@darabonba/number';
 import * as $tea from '@alicloud/tea-typescript';
 import path from 'path';
 import * as fs from 'fs';
@@ -77,6 +76,7 @@ export default class Client {
     // 初始化客户端
     let client = await Client.createClient();
 
+    const bucket = Env.getEnv('BUCKET')
     const domain = Env.getEnv('DOMAIN')
     const cdn_domain = Env.getEnv('ALIYUN_CDN_DOMAIN')
 
@@ -99,7 +99,24 @@ export default class Client {
     const key = fs.readFileSync(key_path, "utf-8")
 
     // 上传证书
-    await Client.uploadUserCertificate(client, cdn_domain, cert, key, "", "", "", "")
+    const certRes = await Client.uploadUserCertificate(client, cdn_domain, cert, key, "", "", "", "")
+    const certId = certRes.body.certId
+
+    // 创建OSS CNAME请求
+    const xmlRequest = `
+<?xml version="1.0" encoding="utf-8"?>
+<BucketCnameConfiguration>
+  <Cname>
+    <Domain>${domain}</Domain>
+    <CertificateConfiguration>
+      <CertId>${certId}-${bucket}</CertId>
+      <Certificate>${cert}</Certificate>
+      <PrivateKey>${key}</PrivateKey>
+      <Force>true</Force>
+    </CertificateConfiguration>
+  </Cname>
+</BucketCnameConfiguration>`
+    fs.writeFileSync(path.resolve(homepath, `./certs/${domain}/oss_cname.xml`), xmlRequest, "utf-8")
   }
 
 }

@@ -61,6 +61,22 @@ jobs:
         ALIYUN_CDN_DOMAIN: ${{ secrets.ALIYUN_CDN_DOMAIN }}
       run: node dist/client.js
 
+    - name: Prepare ossutil
+      uses: manyuanrong/setup-ossutil@v2.0
+      env:
+        ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+        ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
+      with:
+        endpoint: "https://oss-cn-hangzhou.aliyuncs.com"
+        access-key-id: "${ALIYUN_ACCESS_KEY_ID}"
+        access-key-secret: "${ALIYUN_ACCESS_KEY_SECRET}"
+    
+    - name: Set CNAME for OSS bucket
+      env:
+        BUCKET: ${{ secrets.BUCKET }}
+        DOMAIN: ${{ secrets.DOMAIN }}
+      run: ossutil bucket-cname --method put --item certificate oss://${BUCKET} ~/certs/${DOMAIN}/oss_cname.xml
+
     - name: Clean up
       env:
         DOMAIN: ${{ secrets.DOMAIN }}
