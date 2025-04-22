@@ -73,52 +73,33 @@ export default class Client {
     return response;
   }
 
-  // static async uploadCname(client: Cas, domain: string, cName: string): Promise<$Cas.put> {
-  //   let request = new $Cas.UploadCnameRequest({});
-  //   request.domain = domain;
-  // }
-
   static async main(args: string[]): Promise<void> {
     // 初始化客户端
     let client = await Client.createClient();
 
-    const domains = Env.getEnv('DOMAINS').split(',')
-    const cdn_domains = Env.getEnv('ALIYUN_CDN_DOMAINS').split(',')
+    const domain = Env.getEnv('DOMAIN')
+    const cdn_domain = Env.getEnv('ALIYUN_CDN_DOMAIN')
 
     // 上传证书
-    // const uploadTasks = [];
-    for (let i = 0; i < domains.length; i++) {
-      const domain = domains[i]
-      const cdn_domain = cdn_domains[i]
-
-      let cert = ""
-      let key = ""
-
-      // 读取证书并删除同名证书
-      const certListRes = await Client.listUserCertificateOrder(client, domain, "UPLOAD")
-      if (certListRes.body.certificateOrderList.length === 1 && certListRes.body.certificateOrderList[0].name === cdn_domain) {
-        const certId = certListRes.body.certificateOrderList[0].certificateId
-        await Client.deleteUserCertificate(client, certId)
-      }
-
-      const homepath = os.homedir()
-      const cert_path = path.resolve(homepath, `./certs/${domain}/fullchain.pem`)
-      const key_path = path.resolve(homepath, `./certs/${domain}/privkey.pem`)
-
-      Console.log(`${cdn_domain} ${cert_path} ${key_path}`)
-
-      // 读取证书和私钥
-      cert = fs.readFileSync(cert_path, "utf-8")
-      key = fs.readFileSync(key_path, "utf-8")
-
-      // 上传证书
-      await Client.uploadUserCertificate(client, cdn_domain, cert, key, "", "", "", "")
-
-      // 证书详情 获取CertIdentifier
-      // const certDetailRes = await Client.GetUserCertificateDetail(client, certId)
-      // 上传CNAME 接口只支持java的sdk
-      // putCname <https://api.aliyun.com/api/Oss/2019-05-17/PutCname?sdkStyle=dara>
+    // 读取证书并删除同名证书
+    const certListRes = await Client.listUserCertificateOrder(client, domain, "UPLOAD")
+    if (certListRes.body.certificateOrderList.length === 1 && certListRes.body.certificateOrderList[0].name === cdn_domain) {
+      const certId = certListRes.body.certificateOrderList[0].certificateId
+      await Client.deleteUserCertificate(client, certId)
     }
+
+    const homepath = os.homedir()
+    const cert_path = path.resolve(homepath, `./certs/${domain}/fullchain.pem`)
+    const key_path = path.resolve(homepath, `./certs/${domain}/privkey.pem`)
+
+    Console.log(`${cdn_domain} ${cert_path} ${key_path}`)
+
+    // 读取证书和私钥
+    const cert = fs.readFileSync(cert_path, "utf-8")
+    const key = fs.readFileSync(key_path, "utf-8")
+
+    // 上传证书
+    await Client.uploadUserCertificate(client, cdn_domain, cert, key, "", "", "", "")
   }
 
 }

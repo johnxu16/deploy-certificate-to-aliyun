@@ -10,8 +10,8 @@ fork该项目，并填写对应参数，再push一次代码即可（随便改点
 
 - `ALIYUN_ACCESS_KEY_ID`：阿里云账户AK
 - `ALIYUN_ACCESS_KEY_SECRET`：阿里云账户SK
-- `DOMAINS`: 要设置域名的二级域名，例如要设置*.example.com，这里填写的就是example.com, 多个域名用英文逗号隔开
-- `ALIYUN_CDN_DOMAINS`：设置阿里云cdn域名，一般是三级域名，例如cdn.example.com，需要跟上面的DOMAINS对应，否则会设置错误
+- `DOMAIN`: 要设置域名的二级域名，例如要设置*.example.com，这里填写的就是example.com
+- `ALIYUN_CDN_DOMAIN`：设置阿里云cdn域名，一般是三级域名，例如cdn.example.com，需要跟上面的DOMAIN对应，否则会设置错误
 - `EMAIL`:  证书过期时提醒的邮件
 
 目前在使用的域名在DNSPOD下，acme需使用dns_tencent模式和腾讯云认证信息, 有需求可以在action.yml中替换
@@ -22,17 +22,14 @@ fork该项目，并填写对应参数，再push一次代码即可（随便改点
 ```yml
     - name: Obtain SSL Certificates
       env:
-        DOMAINS: ${{ secrets.DOMAINS }}
+        DOMAIN: ${{ secrets.DOMAIN }}
         Tencent_SecretId: ${{ secrets.TENCENT_SECRET_ID }}
         Tencent_SecretKey: ${{ secrets.TENCENT_SECRET_KEY }}
         Ali_Key: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
         Ali_Secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
       run: |
-        IFS=',' read -r -a domain_array <<< "${DOMAINS}"
-        for domain in "${domain_array[@]}"; do
-          ~/.acme.sh/acme.sh --issue --dns dns_tencent -d "*.${domain}" \
-          --key-file ~/certs/${domain}/privkey.pem --fullchain-file ~/certs/${domain}/fullchain.pem
-        done
+        ~/.acme.sh/acme.sh --issue --dns dns_tencent -d "*.${DOMAIN}" \
+        --key-file ~/certs/${domain}/privkey.pem --fullchain-file ~/certs/${domain}/fullchain.pem
 ```
 
 ## 相关文档
@@ -42,3 +39,7 @@ fork该项目，并填写对应参数，再push一次代码即可（随便改点
 > - 上传证书: <https://next.api.aliyun.com/api/cas/2020-04-07/UploadUserCertificate>
 > - 设置oss自定义域名证书: <https://api.aliyun.com/api/Oss/2019-05-17/PutCname?sdkStyle=dara>
 <!-- > - 设置CDN证书：<https://next.api.aliyun.com/document/Cdn/2018-05-10/SetCdnDomainSSLCertificate> -->
+> 证书详情 获取CertIdentifier
+> const certDetailRes = await Client.GetUserCertificateDetail(client, certId)
+> 上传CNAME 接口只支持java的sdk
+> putCname <https://api.aliyun.com/api/Oss/2019-05-17/PutCname?sdkStyle=dara>
