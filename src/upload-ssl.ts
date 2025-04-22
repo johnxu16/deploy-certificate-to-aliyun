@@ -116,10 +116,10 @@ export default class Client {
     </CertificateConfiguration>
   </Cname>
 </BucketCnameConfiguration>`
-    Console.log(xmlRequest)
+    // Console.log(xmlRequest)
 
     const oss_cname_path = path.resolve(homepath, `./certs/${domain}/oss_cname.xml`)
-    Console.log(`path: ${oss_cname_path}`)
+    // Console.log(`path: ${oss_cname_path}`)
 
     fs.writeFileSync(oss_cname_path, xmlRequest)
   }
