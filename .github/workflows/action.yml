@@ -66,14 +66,11 @@ jobs:
 
     - name: Prepare ossutil
       uses: yizhoumo/setup-ossutil@v2
-      env:
-        ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
-        ALIYUN_ACCESS_KEY_SECRET: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET }}
       with:
         ossutil-version: '1.7.19'
         endpoint: "https://oss-cn-hangzhou.aliyuncs.com"
-        access-key-id: ${ALIYUN_ACCESS_KEY_ID}
-        access-key-secret: ${ALIYUN_ACCESS_KEY_SECRET}
+        access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
+        access-key-secret: ${{ secrets.ALIYUN_ACCESS_KEY_SECRET}}
     
     - name: ossutil update certificate
       env:
