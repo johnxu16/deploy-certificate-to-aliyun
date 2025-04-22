@@ -76,7 +76,7 @@ export default class Client {
     // 初始化客户端
     let client = await Client.createClient();
 
-    const bucket = Env.getEnv('BUCKET')
+    const region = Env.getEnv('REGION')
     const domain = Env.getEnv('DOMAIN')
     const cdn_domain = Env.getEnv('ALIYUN_CDN_DOMAIN')
 
@@ -109,7 +109,7 @@ export default class Client {
   <Cname>
     <Domain>${cdn_domain}</Domain>
     <CertificateConfiguration>
-      <CertId>${certId}</CertId>
+      <CertId>${certId}-${region}</CertId>
       <Certificate>${cert}</Certificate>
       <PrivateKey>${key}</PrivateKey>
       <Force>true</Force>

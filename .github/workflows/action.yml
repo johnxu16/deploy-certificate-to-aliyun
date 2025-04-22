@@ -62,7 +62,7 @@ jobs:
         DOMAIN: ${{ secrets.DOMAIN }}
         # 设置阿里云cdn域名，一般是三级域名，例如cdn.example.com，需要跟上面的DOMAIN对应，否则会设置错误
         ALIYUN_CDN_DOMAIN: ${{ secrets.ALIYUN_CDN_DOMAIN }}
-        BUCKET: ${{ secrets.BUCKET }}
+        REGION: ${{ secrets.REGION }}
       run: node dist/upload-ssl.js
 
     - name: Prepare ossutil
