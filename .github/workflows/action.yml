@@ -81,7 +81,7 @@ jobs:
         ALIYUN_CDN_DOMAIN: ${{ secrets.ALIYUN_CDN_DOMAIN }}
         TENCENTCLOUD_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
         TENCENTCLOUD_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
-      run: node dist/set-cname.js
+      run: node set-cname.js
 
     - name: Clean up
       env:

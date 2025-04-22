@@ -1,11 +1,10 @@
-import Env from '@alicloud/darabonba-env';
-import 'zx/globals'
+import {$} from 'zx'
 import { parseStringPromise } from 'xml2js'
 
 (async () => {
-  const bucket = Env.getEnv("BUCKET")
-  const domain = Env.getEnv("DOMAIN")
-  const cdn_domain = Env.getEnv("ALIYUN_CDN_DOMAIN")
+  const bucket = process.env["BUCKET"]
+  const domain = process.env["DOMAIN"]
+  const cdn_domain = process.env["ALIYUN_CDN_DOMAIN"]
   const sld_domain = domain.split('.').slice(-2).join('.')
   const sub_domain = cdn_domain.replace(`.${sld_domain}`, '')
 

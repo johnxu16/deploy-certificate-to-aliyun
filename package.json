@@ -4,8 +4,6 @@
   "description": "",
   "main": "dist/client.js",
   "scripts": {
-    "test": "mocha --reporter spec --timeout 3000 test/*.test.js",
-    "test-cov": "nyc -e .ts -r=html -r=text -r=lcov npm run test",
     "build": "tsc",
     "prepublishOnly": "tsc"
   },
@@ -13,7 +11,6 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^12.20.55",
-    "nyc": "^15.0.0",
     "source-map-support": "^0.5.16",
     "ts-node": "^8.6.2",
     "typescript": "^3.7.5"
