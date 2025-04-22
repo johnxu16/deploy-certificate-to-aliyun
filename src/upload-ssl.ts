@@ -109,7 +109,7 @@ export default class Client {
   <Cname>
     <Domain>${cdn_domain}</Domain>
     <CertificateConfiguration>
-      <CertId>${certId}-${bucket}</CertId>
+      <CertId>${certId}</CertId>
       <Certificate>${cert}</Certificate>
       <PrivateKey>${key}</PrivateKey>
       <Force>true</Force>
